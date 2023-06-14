@@ -1,4 +1,5 @@
 import 'package:catering_service/constant.dart';
+import 'package:catering_service/view/screen/auth/sign_up_screen_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'dart:math' as math;
@@ -180,12 +181,22 @@ class LoginPage extends StatelessWidget {
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.02,
                   ),
-                  Text(
-                    "Sign Up",
-                    style: AppTextStyle.boldText(
-                      fontSize: 16,
-                      color: ColorConstant.secondaryColor,
-                      fontWeight: FontWeight.w500,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SignUpPage(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "Sign Up",
+                      style: AppTextStyle.boldText(
+                        fontSize: 16,
+                        color: ColorConstant.secondaryColor,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ],
