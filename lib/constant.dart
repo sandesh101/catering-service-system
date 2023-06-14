@@ -14,7 +14,7 @@ class AppTextStyle {
     Color? color,
   }) {
     return GoogleFonts.poppins(
-      fontSize: fontSize ?? 24,
+      fontSize: fontSize ?? 18,
       color: color ?? ColorConstant.blackColor,
     );
   }
@@ -25,7 +25,7 @@ class AppTextStyle {
     FontWeight? fontWeight,
   }) {
     return GoogleFonts.poppins(
-      fontSize: fontSize ?? 24,
+      fontSize: fontSize ?? 18,
       color: color ?? ColorConstant.blackColor,
       fontWeight: fontWeight ?? FontWeight.bold,
     );
