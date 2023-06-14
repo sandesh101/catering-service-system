@@ -29,7 +29,7 @@ class LoginPage extends StatelessWidget {
             right: 0,
             child: Text(
               'LOGIN',
-              style: AppTextStyle.normalText(),
+              style: AppTextStyle.normalText(fontSize: 24),
             ),
           ),
           //Email Field
