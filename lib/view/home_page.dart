@@ -1,4 +1,4 @@
-import 'package:catering_service/constant.dart';
+import 'package:catering_service/view/screen/auth/login_screen_ui.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -8,11 +8,15 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text(
-          "Hello",
-          style: AppTextStyle.normalText(),
-        ),
-      ),
+          child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => LoginPage()),
+          );
+        },
+        child: Text("Login"),
+      )),
     );
   }
 }
