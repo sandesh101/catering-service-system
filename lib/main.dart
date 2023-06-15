@@ -1,4 +1,4 @@
-import 'package:catering_service/view/home_page.dart';
+import 'package:catering_service/routes.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +16,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      // home: const HomePage(),
+      initialRoute: "/",
+      routes: routeScreen,
     );
   }
 }

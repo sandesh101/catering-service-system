@@ -1,5 +1,4 @@
 import 'package:catering_service/constant.dart';
-import 'package:catering_service/view/screen/auth/sign_up_screen_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'dart:math' as math;
@@ -183,12 +182,8 @@ class LoginPage extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SignUpPage(),
-                        ),
-                      );
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, 'signup', (route) => false);
                     },
                     child: Text(
                       "Sign Up",
