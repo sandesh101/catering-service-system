@@ -1,3 +1,4 @@
+import 'package:catering_service/constant.dart';
 import 'package:flutter/material.dart';
 
 class CartPage extends StatefulWidget {
@@ -11,8 +12,11 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.black,
+      body: Center(
+        child: Text(
+          'Cart Page',
+          style: AppTextStyle.normalText(fontSize: 24),
+        ),
       ),
     );
   }

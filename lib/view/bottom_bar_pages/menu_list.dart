@@ -1,3 +1,4 @@
+import 'package:catering_service/constant.dart';
 import 'package:flutter/material.dart';
 
 class MenuListPage extends StatefulWidget {
@@ -11,8 +12,11 @@ class _MenuListPageState extends State<MenuListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.blue,
+      body: Center(
+        child: Text(
+          'Menu List Page',
+          style: AppTextStyle.normalText(fontSize: 24),
+        ),
       ),
     );
   }
