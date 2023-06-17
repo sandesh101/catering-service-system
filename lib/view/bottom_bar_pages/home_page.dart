@@ -1,5 +1,4 @@
 import 'package:catering_service/constant.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
@@ -331,34 +330,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-        bottomNavigationBar: CurvedNavigationBar(
-          animationCurve: Curves.fastEaseInToSlowEaseOut,
-          backgroundColor: ColorConstant.primaryColor,
-          animationDuration: const Duration(milliseconds: 600),
-          color: ColorConstant.blackColor,
-          items: [
-            Icon(
-              Iconsax.home,
-              color: ColorConstant.primaryColor,
-              size: 30,
-            ),
-            Icon(
-              Iconsax.shopping_bag,
-              color: ColorConstant.primaryColor,
-              size: 30,
-            ),
-            Icon(
-              Iconsax.shopping_cart,
-              color: ColorConstant.primaryColor,
-              size: 30,
-            ),
-            Icon(
-              Iconsax.user,
-              color: ColorConstant.primaryColor,
-              size: 30,
             ),
           ],
         ),
