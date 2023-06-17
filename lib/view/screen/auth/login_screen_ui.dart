@@ -130,18 +130,24 @@ class LoginPage extends StatelessWidget {
             top: MediaQuery.of(context).size.height * 0.66,
             left: MediaQuery.of(context).size.width * 0.03,
             right: MediaQuery.of(context).size.width * 0.03,
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.06,
-              width: MediaQuery.of(context).size.width * 0.5,
-              decoration: BoxDecoration(
-                color: ColorConstant.secondaryColor,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Center(
-                child: Text(
-                  "LOGIN",
-                  style: AppTextStyle.normalText(
-                      color: ColorConstant.primaryColor),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, 'home_master', (route) => false);
+              },
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.06,
+                width: MediaQuery.of(context).size.width * 0.5,
+                decoration: BoxDecoration(
+                  color: ColorConstant.secondaryColor,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Center(
+                  child: Text(
+                    "LOGIN",
+                    style: AppTextStyle.normalText(
+                        color: ColorConstant.primaryColor),
+                  ),
                 ),
               ),
             ),
