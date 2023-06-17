@@ -2,6 +2,10 @@ import 'package:catering_service/constant.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
+import 'package:nepali_date_picker/nepali_date_picker.dart';
+import 'package:nepali_date_picker/nepali_date_picker.dart' as picker;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,12 +15,29 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var dateController = TextEditingController();
+  // NepaliDateTime pickedDate;
+  NepaliDateTime? _selectedDateTime;
+  String? selectedCategory;
   int _groupValue = 0;
   final images = [
     "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     "https://images.pexels.com/photos/1640774/pexels-photo-1640774.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     "https://images.pexels.com/photos/406152/pexels-photo-406152.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   ];
+
+  void pickDate() async {
+    _selectedDateTime = await picker.showMaterialDatePicker(
+      context: context,
+      initialDate: NepaliDateTime.now(),
+      firstDate: NepaliDateTime(2080),
+      lastDate: NepaliDateTime(2081),
+      initialDatePickerMode: DatePickerMode.day,
+    );
+    if (_selectedDateTime != null) {
+      dateController.text = DateFormat('yyyy-MM-dd').format(_selectedDateTime!);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,34 +143,41 @@ class _HomePageState extends State<HomePage> {
                   left: MediaQuery.of(context).size.height * 0.02,
                   right: MediaQuery.of(context).size.height * 0.02,
                 ),
-                child: TextFormField(
+                child: GestureDetector(
                   onTap: () {
-                    print("TAPPED");
+                    pickDate();
                   },
-                  decoration: InputDecoration(
-                    contentPadding:
-                        const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
-                    prefixIcon: const Icon(
-                      Iconsax.calendar,
-                      color: Colors.black,
-                    ),
+                  child: AbsorbPointer(
+                    child: TextFormField(
+                      // keyboardType: TextInputType.datetime,
+                      controller: dateController,
 
-                    // prefixIconColor: Constant.secondaryColor,
-                    label: Text(
-                      "Pick a Date",
-                      style: AppTextStyle.normalText(),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: BorderSide(
-                        color: ColorConstant.secondaryColor,
-                        width: 2.0,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: Color(0xFF827C7C),
+                      decoration: InputDecoration(
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
+                        prefixIcon: const Icon(
+                          Iconsax.calendar,
+                          color: Colors.black,
+                        ),
+
+                        // prefixIconColor: Constant.secondaryColor,
+                        label: Text(
+                          "Pick a Date",
+                          style: AppTextStyle.normalText(),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: BorderSide(
+                            color: ColorConstant.secondaryColor,
+                            width: 2.0,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(
+                            color: Color(0xFF827C7C),
+                          ),
+                        ),
                       ),
                     ),
                   ),
