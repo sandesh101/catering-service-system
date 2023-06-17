@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          elevation: 2.0,
+          // backgroundColor: ColorConstant.secondaryColor,
           title: Text(
             "HotCase",
             style: AppTextStyle.normalText(
@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             //User Info
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.0,
+              top: MediaQuery.of(context).size.height * 0,
               left: 0,
               right: 0,
               child: Padding(
