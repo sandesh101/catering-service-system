@@ -33,7 +33,6 @@ class _MasterScreenState extends State<MasterScreen> {
           setState(() {
             _currentIndex = value;
           });
-          // print(_currentIndex);
         },
         animationCurve: Curves.easeInOutQuad,
         backgroundColor: ColorConstant.primaryColor,
