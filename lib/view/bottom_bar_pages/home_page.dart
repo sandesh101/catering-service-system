@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          // backgroundColor: ColorConstant.secondaryColor,
+          elevation: 5.0,
           title: Text(
             "HotCase",
             style: AppTextStyle.normalText(
@@ -285,7 +285,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Text(
                         "Packing",
-                        style: AppTextStyle.normalText(),
+                        style: AppTextStyle.normalText(
+                          fontSize: 18,
+                        ),
                       )
                     ],
                   ),
@@ -302,7 +304,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Text(
                         "In-House",
-                        style: AppTextStyle.normalText(),
+                        style: AppTextStyle.normalText(
+                          fontSize: 18,
+                        ),
                       )
                     ],
                   ),

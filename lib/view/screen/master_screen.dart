@@ -28,6 +28,7 @@ class _MasterScreenState extends State<MasterScreen> {
     return Scaffold(
       body: screens[_currentIndex],
       bottomNavigationBar: CurvedNavigationBar(
+        height: 55.0,
         onTap: (value) {
           setState(() {
             _currentIndex = value;
@@ -42,22 +43,22 @@ class _MasterScreenState extends State<MasterScreen> {
           Icon(
             Iconsax.home,
             color: ColorConstant.primaryColor,
-            size: 30,
+            size: 25,
           ),
           Icon(
             Iconsax.shopping_bag,
             color: ColorConstant.primaryColor,
-            size: 30,
+            size: 25,
           ),
           Icon(
             Iconsax.shopping_cart,
             color: ColorConstant.primaryColor,
-            size: 30,
+            size: 25,
           ),
           Icon(
             Iconsax.user,
             color: ColorConstant.primaryColor,
-            size: 30,
+            size: 25,
           ),
         ],
       ),

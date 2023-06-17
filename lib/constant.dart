@@ -15,7 +15,7 @@ class AppTextStyle {
     Color? color,
   }) {
     return GoogleFonts.poppins(
-      fontSize: fontSize ?? 18,
+      fontSize: fontSize ?? 16,
       color: color ?? ColorConstant.blackColor,
     );
   }
