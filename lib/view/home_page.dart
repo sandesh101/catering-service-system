@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage> {
       firstDate: NepaliDateTime(2080),
       lastDate: NepaliDateTime(2081),
       initialDatePickerMode: DatePickerMode.day,
+      // locale:
     );
     if (_selectedDateTime != null) {
       dateController.text = DateFormat('yyyy-MM-dd').format(_selectedDateTime!);
@@ -196,9 +197,6 @@ class _HomePageState extends State<HomePage> {
                   right: MediaQuery.of(context).size.height * 0.02,
                 ),
                 child: TextFormField(
-                  onTap: () {
-                    print("TAPPED");
-                  },
                   decoration: InputDecoration(
                     contentPadding:
                         const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
@@ -242,9 +240,7 @@ class _HomePageState extends State<HomePage> {
                   right: MediaQuery.of(context).size.height * 0.02,
                 ),
                 child: TextFormField(
-                  onTap: () {
-                    print("TAPPED");
-                  },
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     contentPadding:
                         const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
