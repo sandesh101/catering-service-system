@@ -36,7 +36,7 @@ class _MasterScreenState extends State<MasterScreen> {
         },
         animationCurve: Curves.easeInOutQuad,
         backgroundColor: ColorConstant.primaryColor,
-        animationDuration: const Duration(milliseconds: 600),
+        animationDuration: const Duration(milliseconds: 300),
         color: ColorConstant.blackColor,
         items: [
           Icon(
