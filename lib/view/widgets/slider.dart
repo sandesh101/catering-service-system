@@ -27,14 +27,12 @@ class _SlidersState extends State<Sliders> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getBanners();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     getBanners();
   }
