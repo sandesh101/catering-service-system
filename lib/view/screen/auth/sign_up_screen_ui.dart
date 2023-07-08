@@ -423,7 +423,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 "Account Created Successfully!!",
                                 Colors.green,
                               );
-                              // Navigator.of(context).pushNamed('login');
+                              Navigator.of(context).pushNamed('login');
                             }).onError((error, stackTrace) {
                               auth.setIsLoading(false);
                               // print("2.2. ${authProvider.isLoading}");
