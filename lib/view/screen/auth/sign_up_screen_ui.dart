@@ -4,6 +4,7 @@ import 'package:catering_service/provider/auth_provider.dart';
 import 'package:catering_service/view/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:lottie/lottie.dart';
 import 'dart:math' as math;
 
 import 'package:provider/provider.dart';
@@ -29,8 +30,8 @@ class _SignUpPageState extends State<SignUpPage> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   signupUser() async {
+    authProvider.setIsLoading(true);
     if (_key.currentState!.validate()) {
-      authProvider.setIsLoading(true);
       await _authController
           .signUpUser(
         _nameController.text.trim(),
@@ -433,18 +434,23 @@ class _SignUpPageState extends State<SignUpPage> {
                 onTap: () {
                   signupUser();
                 },
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.06,
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  decoration: BoxDecoration(
-                    color: ColorConstant.secondaryColor,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "SIGN UP",
-                      style: AppTextStyle.normalText(
-                          color: ColorConstant.primaryColor),
+                child: Consumer<AuthProvider>(
+                  builder: (context, value, child) => Container(
+                    height: MediaQuery.of(context).size.height * 0.06,
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    decoration: BoxDecoration(
+                      color: ColorConstant.secondaryColor,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: value.isLoading
+                          ? Lottie.asset('assets/animations/loading.json',
+                              height: 250)
+                          : Text(
+                              "SIGN UP",
+                              style: AppTextStyle.normalText(
+                                  color: ColorConstant.primaryColor),
+                            ),
                     ),
                   ),
                 ),
