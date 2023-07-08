@@ -1,4 +1,6 @@
 import 'package:catering_service/constant.dart';
+import 'package:catering_service/view/widgets/custom_snackbar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -10,6 +12,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,8 +80,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, "login", (route) => false);
+                      _auth.signOut().then((value) {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, "login", (route) => false);
+                      }).onError((error, stackTrace) {
+                        CustomSnackbar.showSnack(
+                            context, error.toString(), Colors.red);
+                      });
                     },
                     child: Row(
                       children: [
