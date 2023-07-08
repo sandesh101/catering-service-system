@@ -3,10 +3,10 @@ import 'package:catering_service/controllers/auth_controller.dart';
 import 'package:catering_service/provider/auth_provider.dart';
 import 'package:catering_service/provider/image_picker_provider.dart';
 import 'package:catering_service/view/widgets/custom_snackbar.dart';
-import 'package:catering_service/view/widgets/image_picker.dart';
 import 'package:cross_file_image/cross_file_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'dart:math' as math;
 
@@ -21,8 +21,8 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final AuthController _authController = AuthController();
-  final PickImage _imagePicker = PickImage();
-
+  XFile? image;
+  bool isPickedImage = false;
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -38,6 +38,17 @@ class _SignUpPageState extends State<SignUpPage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       Provider.of<AuthProvider>(context, listen: false);
     });
+  }
+
+  Future<void> pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        // image = XFile(pickedImage.path);
+        isPickedImage = true;
+      });
+    }
   }
 
   @override
@@ -101,14 +112,15 @@ class _SignUpPageState extends State<SignUpPage> {
                     // left: MediaQuery.sizeOf(context).width * 0.5,
                     child: Consumer<ImagePickerProvider>(
                       builder: (context, value, _) => GestureDetector(
-                        onTap: () {
-                          _imagePicker.pickImage();
+                        onTap: () async {
+                          pickImage();
+                          // print("HO: $pickedImage");
                         },
                         child: CircleAvatar(
                           radius: 40,
                           backgroundColor: Colors.red,
-                          backgroundImage: value.isPickedImage
-                              ? XFileImage(_imagePicker.pickedImage!)
+                          backgroundImage: isPickedImage
+                              ? XFileImage(image!)
                               : const AssetImage(
                                       'assets/images/default_user.png')
                                   as ImageProvider,
@@ -116,6 +128,25 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                   ),
+                  Positioned(
+                      top: MediaQuery.sizeOf(context).height * 0.25,
+                      left: MediaQuery.sizeOf(context).width * 0.54,
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: Colors.white,
+                        ),
+                        child: Center(
+                          child: IconButton(
+                            onPressed: () {
+                              pickImage();
+                            },
+                            icon: const Icon(Iconsax.gallery),
+                          ),
+                        ),
+                      )),
                   //Image Picker Field
 
                   //Email Field
