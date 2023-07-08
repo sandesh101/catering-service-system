@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../constant.dart';
 
 class CustomSnackbar {
-  static void showSnack(BuildContext context, String message, Color color) {
+  static showSnack(BuildContext context, String message, Color color) {
     final snackbar = SnackBar(
       behavior: SnackBarBehavior.floating,
       dismissDirection: DismissDirection.horizontal,

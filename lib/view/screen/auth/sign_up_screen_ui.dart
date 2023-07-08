@@ -26,18 +26,23 @@ class _SignUpPageState extends State<SignUpPage> {
 
   signupUser() async {
     if (_key.currentState!.validate()) {
-      await _authController.signUpUser(
+      await _authController
+          .signUpUser(
         _nameController.text.trim(),
         _phoneController.text.trim(),
         _emailController.text.trim(),
         _passwordController.text.trim(),
         _addressController.text.trim(),
-      );
-      return CustomSnackbar.showSnack(
-        context,
-        'Account Created Successfully!!',
-        const Color.fromARGB(255, 63, 167, 67),
-      );
+      )
+          .then((value) {
+        CustomSnackbar.showSnack(
+          context,
+          "Account Created Successfully!!",
+          Colors.green,
+        );
+        Navigator.of(context).pushNamed('login');
+      }).onError((error, stackTrace) =>
+              CustomSnackbar.showSnack(context, "Error", Colors.red));
     } else {
       return CustomSnackbar.showSnack(
         context,
