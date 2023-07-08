@@ -37,4 +37,24 @@ class AuthController {
     }
     return res;
   }
+
+  //Login
+  Future<String> loginUser(String email, String password) async {
+    String res = 'Some error occured';
+    try {
+      if (email.isNotEmpty && password.isNotEmpty) {
+        //create the user
+        UserCredential credential = await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+
+        res = 'success';
+      } else {
+        res = 'All fields are required';
+      }
+    } catch (e) {
+      // print(e.toString());
+      res = e.toString();
+    }
+    return res;
+  }
 }
