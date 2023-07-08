@@ -29,6 +29,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   XFile? image;
   bool isPickedImage = false;
+  bool isTakingImage = false;
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -53,10 +54,16 @@ class _SignUpPageState extends State<SignUpPage> {
     final ImagePicker picker = ImagePicker();
     image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
+      setState(() {
+        isTakingImage = true;
+        print(isTakingImage);
+      });
       imageURL = await uploadProfileImages(image);
       print("IMAGE URL: $imageURL");
       setState(() {
         // image = XFile(pickedImage.path);
+        isTakingImage = false;
+        print(isTakingImage);
         imageUniqueName =
             DateTime.now().millisecondsSinceEpoch.toString() + image!.name;
         isPickedImage = true;
@@ -81,21 +88,6 @@ class _SignUpPageState extends State<SignUpPage> {
     }
     return downloadUrl!;
   }
-
-//Function to upload images to firestore database
-  // uploadToDatabase() async {
-  //   try {
-  //     if (isPickedImage) {
-  //       String imageUrl = await uploadSliderImages(image);
-  //       await _firebaseFirestore
-  //           .collection('users')
-  //           .doc(credential.user!.uid)
-  //           .set({"images": imageUrl});
-  //     }
-  //   } catch (e) {
-  //     print(e.toString());
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -160,17 +152,20 @@ class _SignUpPageState extends State<SignUpPage> {
                       builder: (context, value, _) => GestureDetector(
                         onTap: () async {
                           pickImage();
-                          print("HO: $imageURL");
                         },
-                        child: CircleAvatar(
-                          radius: 40,
-                          backgroundColor: Colors.red,
-                          backgroundImage: isPickedImage
-                              ? XFileImage(image!)
-                              : const AssetImage(
-                                      'assets/images/default_user.png')
-                                  as ImageProvider,
-                        ),
+                        child: isTakingImage
+                            ? const CircleAvatar(
+                                radius: 40,
+                                child: CircularProgressIndicator(),
+                              )
+                            : CircleAvatar(
+                                radius: 40,
+                                backgroundColor: Colors.red,
+                                backgroundImage: isPickedImage
+                                    ? XFileImage(image!)
+                                    : const AssetImage(
+                                            'assets/images/default_user.png')
+                                        as ImageProvider),
                       ),
                     ),
                   ),
