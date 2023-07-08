@@ -1,9 +1,12 @@
 import 'package:catering_service/constant.dart';
 import 'package:catering_service/controllers/auth_controller.dart';
+import 'package:catering_service/provider/auth_provider.dart';
 import 'package:catering_service/view/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'dart:math' as math;
+
+import 'package:provider/provider.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -13,7 +16,8 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  AuthController _authController = AuthController();
+  final AuthController _authController = AuthController();
+  final AuthProvider authProvider = AuthProvider();
 
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -26,6 +30,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   signupUser() async {
     if (_key.currentState!.validate()) {
+      authProvider.setIsLoading(true);
       await _authController
           .signUpUser(
         _nameController.text.trim(),
@@ -35,21 +40,33 @@ class _SignUpPageState extends State<SignUpPage> {
         _addressController.text.trim(),
       )
           .then((value) {
+        authProvider.setIsLoading(false);
         CustomSnackbar.showSnack(
           context,
           "Account Created Successfully!!",
           Colors.green,
         );
         Navigator.of(context).pushNamed('login');
-      }).onError((error, stackTrace) =>
-              CustomSnackbar.showSnack(context, "Error", Colors.red));
+      }).onError((error, stackTrace) {
+        authProvider.setIsLoading(false);
+        CustomSnackbar.showSnack(context, "Error", Colors.red);
+      });
     } else {
+      authProvider.setIsLoading(false);
       return CustomSnackbar.showSnack(
         context,
         'All fields are required!',
         Colors.red,
       );
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<AuthProvider>(context, listen: false);
+    });
   }
 
   @override
@@ -249,44 +266,55 @@ class _SignUpPageState extends State<SignUpPage> {
                   left: MediaQuery.of(context).size.height * 0.02,
                   right: MediaQuery.of(context).size.height * 0.02,
                 ),
-                child: TextFormField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                    contentPadding:
-                        const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
-                    prefixIcon: const Icon(
-                      Iconsax.lock,
-                      color: Colors.black,
-                    ),
-                    suffixIcon: const Icon(Iconsax.eye),
-                    // prefixIconColor: Constant.secondaryColor,
-                    label: Text(
-                      "Password",
-                      style: AppTextStyle.normalText(),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: BorderSide(
-                        color: ColorConstant.secondaryColor,
-                        width: 2.0,
+                child: Consumer<AuthProvider>(
+                  builder: (context, value, _) => TextFormField(
+                    controller: _passwordController,
+                    obscureText: value.isPassword,
+                    decoration: InputDecoration(
+                      contentPadding:
+                          const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
+                      prefixIcon: const Icon(
+                        Iconsax.lock,
+                        color: Colors.black,
+                      ),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          value.setIsPassword();
+                          // print(value.isPassword);
+                        },
+                        icon: Icon(
+                          value.isPassword ? Iconsax.eye : Iconsax.eye_slash,
+                        ),
+                      ),
+                      // prefixIconColor: Constant.secondaryColor,
+                      label: Text(
+                        "Password",
+                        style: AppTextStyle.normalText(),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: BorderSide(
+                          color: ColorConstant.secondaryColor,
+                          width: 2.0,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: const BorderSide(
+                          color: Color(0xFF827C7C),
+                        ),
                       ),
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: Color(0xFF827C7C),
-                      ),
-                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Password can't be empty";
+                      } else if (_passwordController.text.trim() !=
+                          _confirmPasswordController.text.trim()) {
+                        return "Password and Confirm must match";
+                      }
+                      return null;
+                    },
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Password can't be empty";
-                    } else if (_passwordController.text.trim() !=
-                        _confirmPasswordController.text.trim()) {
-                      return "Password and Confirm must match";
-                    }
-                    return null;
-                  },
                 ),
               ),
             ),
@@ -301,41 +329,54 @@ class _SignUpPageState extends State<SignUpPage> {
                   left: MediaQuery.of(context).size.height * 0.02,
                   right: MediaQuery.of(context).size.height * 0.02,
                 ),
-                child: TextFormField(
-                  controller: _confirmPasswordController,
-                  decoration: InputDecoration(
-                    contentPadding:
-                        const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
-                    prefixIcon: const Icon(
-                      Iconsax.lock,
-                      color: Colors.black,
-                    ),
-                    suffixIcon: const Icon(Iconsax.eye),
-                    // prefixIconColor: Constant.secondaryColor,
-                    label: Text(
-                      "Confirm Password",
-                      style: AppTextStyle.normalText(),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: BorderSide(
-                        color: ColorConstant.secondaryColor,
-                        width: 2.0,
+                child: Consumer<AuthProvider>(
+                  builder: (context, passValue, _) => TextFormField(
+                    controller: _confirmPasswordController,
+                    obscureText: passValue.isConfirmPassword,
+                    decoration: InputDecoration(
+                      contentPadding:
+                          const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
+                      prefixIcon: const Icon(
+                        Iconsax.lock,
+                        color: Colors.black,
+                      ),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          passValue.setIsConfirmPassword();
+                          // print(value.isPassword);
+                        },
+                        icon: Icon(
+                          passValue.isConfirmPassword
+                              ? Iconsax.eye
+                              : Iconsax.eye_slash,
+                        ),
+                      ),
+                      // prefixIconColor: Constant.secondaryColor,
+                      label: Text(
+                        "Confirm Password",
+                        style: AppTextStyle.normalText(),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: BorderSide(
+                          color: ColorConstant.secondaryColor,
+                          width: 2.0,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: const BorderSide(
+                          color: Color(0xFF827C7C),
+                        ),
                       ),
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: const BorderSide(
-                        color: Color(0xFF827C7C),
-                      ),
-                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Confirm Password can't be empty";
+                      }
+                      return null;
+                    },
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Confirm Password can't be empty";
-                    }
-                    return null;
-                  },
                 ),
               ),
             ),
