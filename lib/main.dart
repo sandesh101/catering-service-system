@@ -1,4 +1,5 @@
 import 'package:catering_service/provider/auth_provider.dart';
+import 'package:catering_service/provider/image_picker_provider.dart';
 import 'package:catering_service/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
+        ChangeNotifierProvider<ImagePickerProvider>(
+            create: (_) => ImagePickerProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

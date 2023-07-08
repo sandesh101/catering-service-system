@@ -1,7 +1,10 @@
 import 'package:catering_service/constant.dart';
 import 'package:catering_service/controllers/auth_controller.dart';
 import 'package:catering_service/provider/auth_provider.dart';
+import 'package:catering_service/provider/image_picker_provider.dart';
 import 'package:catering_service/view/widgets/custom_snackbar.dart';
+import 'package:catering_service/view/widgets/image_picker.dart';
+import 'package:cross_file_image/cross_file_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:lottie/lottie.dart';
@@ -18,6 +21,7 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final AuthController _authController = AuthController();
+  final PickImage _imagePicker = PickImage();
 
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -47,9 +51,10 @@ class _SignUpPageState extends State<SignUpPage> {
             child: SizedBox(
               height: MediaQuery.sizeOf(context).height,
               child: Stack(
+                alignment: AlignmentDirectional.center,
                 children: [
                   Positioned(
-                    // top: MediaQuery.of(context).size.height * 0.0,
+                    top: MediaQuery.of(context).size.height * 0.0,
                     left: MediaQuery.of(context).size.height * 0.17,
                     right: 0,
                     // bottom: MediaQuery.of(context).size.height * 0.4,
@@ -66,7 +71,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                   Positioned(
-                    top: MediaQuery.of(context).size.height * 0.3,
+                    top: MediaQuery.of(context).size.height * 0.4,
                     right: MediaQuery.of(context).size.height * 0.17,
                     child: Transform.rotate(
                       angle: -22 * (math.pi / 180),
@@ -89,9 +94,33 @@ class _SignUpPageState extends State<SignUpPage> {
                       style: AppTextStyle.normalText(fontSize: 24),
                     ),
                   ),
+
+                  //Image Picker Field
+                  Positioned(
+                    top: MediaQuery.sizeOf(context).height * 0.2,
+                    // left: MediaQuery.sizeOf(context).width * 0.5,
+                    child: Consumer<ImagePickerProvider>(
+                      builder: (context, value, _) => GestureDetector(
+                        onTap: () {
+                          _imagePicker.pickImage();
+                        },
+                        child: CircleAvatar(
+                          radius: 40,
+                          backgroundColor: Colors.red,
+                          backgroundImage: value.isPickedImage
+                              ? XFileImage(_imagePicker.pickedImage!)
+                              : const AssetImage(
+                                      'assets/images/default_user.png')
+                                  as ImageProvider,
+                        ),
+                      ),
+                    ),
+                  ),
+                  //Image Picker Field
+
                   //Email Field
                   Positioned(
-                    top: MediaQuery.of(context).size.height * 0.2,
+                    top: MediaQuery.of(context).size.height * 0.3,
                     left: 0,
                     right: 0,
                     child: Padding(
@@ -136,7 +165,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   //Password Field
                   Positioned(
-                    top: MediaQuery.of(context).size.height * 0.28,
+                    top: MediaQuery.of(context).size.height * 0.37,
                     left: 0,
                     right: 0,
                     child: Padding(
@@ -182,7 +211,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                   Positioned(
-                    top: MediaQuery.of(context).size.height * 0.36,
+                    top: MediaQuery.of(context).size.height * 0.44,
                     left: 0,
                     right: 0,
                     child: Padding(
@@ -229,7 +258,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   //Password Field
                   Positioned(
-                    top: MediaQuery.of(context).size.height * 0.44,
+                    top: MediaQuery.of(context).size.height * 0.51,
                     left: 0,
                     right: 0,
                     child: Padding(
@@ -294,7 +323,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   //Confirm Password Field
                   Positioned(
-                    top: MediaQuery.of(context).size.height * 0.52,
+                    top: MediaQuery.of(context).size.height * 0.58,
                     left: 0,
                     right: 0,
                     child: Padding(
@@ -356,7 +385,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   //Email Field
                   Positioned(
-                    top: MediaQuery.of(context).size.height * 0.6,
+                    top: MediaQuery.of(context).size.height * 0.65,
                     left: 0,
                     right: 0,
                     child: Padding(
@@ -400,7 +429,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                   Positioned(
-                    top: MediaQuery.of(context).size.height * 0.76,
+                    top: MediaQuery.of(context).size.height * 0.78,
                     left: MediaQuery.of(context).size.width * 0.03,
                     right: MediaQuery.of(context).size.width * 0.03,
                     child: Consumer<AuthProvider>(
