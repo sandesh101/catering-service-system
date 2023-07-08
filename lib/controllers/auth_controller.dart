@@ -6,7 +6,7 @@ class AuthController {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
   Future<String> signUpUser(String fullName, String phone, String email,
-      String password, String address) async {
+      String password, String address, String profileImage) async {
     String res = 'Some error occured';
     try {
       if (fullName.isNotEmpty &&
@@ -27,6 +27,7 @@ class AuthController {
           'name': fullName,
           'address': address,
           'phone': phone,
+          'image': profileImage,
         });
         res = 'success';
       } else {
@@ -44,7 +45,7 @@ class AuthController {
     try {
       if (email.isNotEmpty && password.isNotEmpty) {
         //create the user
-        UserCredential credential = await _auth.signInWithEmailAndPassword(
+        await _auth.signInWithEmailAndPassword(
             email: email, password: password);
 
         res = 'success';

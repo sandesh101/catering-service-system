@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:catering_service/constant.dart';
 import 'package:catering_service/controllers/auth_controller.dart';
 import 'package:catering_service/provider/auth_provider.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:catering_service/provider/image_picker_provider.dart';
 import 'package:catering_service/view/widgets/custom_snackbar.dart';
 import 'package:cross_file_image/cross_file_image.dart';
@@ -8,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
+
 import 'dart:math' as math;
 
 import 'package:provider/provider.dart';
@@ -21,6 +25,8 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final AuthController _authController = AuthController();
+  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+
   XFile? image;
   bool isPickedImage = false;
   final _nameController = TextEditingController();
@@ -31,6 +37,9 @@ class _SignUpPageState extends State<SignUpPage> {
   final _addressController = TextEditingController();
 
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
+
+  String imageUniqueName = '';
+  String imageURL = '';
 
   @override
   void initState() {
@@ -44,12 +53,49 @@ class _SignUpPageState extends State<SignUpPage> {
     final ImagePicker picker = ImagePicker();
     image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
+      imageURL = await uploadProfileImages(image);
+      print("IMAGE URL: $imageURL");
       setState(() {
         // image = XFile(pickedImage.path);
+        imageUniqueName =
+            DateTime.now().millisecondsSinceEpoch.toString() + image!.name;
         isPickedImage = true;
       });
     }
   }
+
+  //Function to upload images to cloud storage
+  Future<String> uploadProfileImages(dynamic image) async {
+    String? downloadUrl;
+    try {
+      Reference ref = _firebaseStorage
+          .ref()
+          .child('user_profile_images')
+          .child(imageUniqueName);
+      UploadTask uploadTask = ref.putFile(File(image.path).absolute);
+      TaskSnapshot taskSnapshot = await uploadTask;
+
+      downloadUrl = await taskSnapshot.ref.getDownloadURL();
+    } catch (e) {
+      print("Uploading: ${e.toString()}");
+    }
+    return downloadUrl!;
+  }
+
+//Function to upload images to firestore database
+  // uploadToDatabase() async {
+  //   try {
+  //     if (isPickedImage) {
+  //       String imageUrl = await uploadSliderImages(image);
+  //       await _firebaseFirestore
+  //           .collection('users')
+  //           .doc(credential.user!.uid)
+  //           .set({"images": imageUrl});
+  //     }
+  //   } catch (e) {
+  //     print(e.toString());
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +160,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       builder: (context, value, _) => GestureDetector(
                         onTap: () async {
                           pickImage();
-                          // print("HO: $pickedImage");
+                          print("HO: $imageURL");
                         },
                         child: CircleAvatar(
                           radius: 40,
@@ -149,7 +195,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       )),
                   //Image Picker Field
 
-                  //Email Field
+                  //Fullname Field
                   Positioned(
                     top: MediaQuery.of(context).size.height * 0.3,
                     left: 0,
@@ -194,7 +240,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                   ),
-                  //Password Field
+                  //Phone Field
                   Positioned(
                     top: MediaQuery.of(context).size.height * 0.37,
                     left: 0,
@@ -475,6 +521,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               _emailController.text.trim(),
                               _passwordController.text.trim(),
                               _addressController.text.trim(),
+                              imageURL,
                             )
                                 .then((value) {
                               auth.setIsLoading(false);
