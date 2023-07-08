@@ -336,7 +336,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             //Email Field
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.62,
+              top: MediaQuery.of(context).size.height * 0.6,
               left: 0,
               right: 0,
               child: Padding(
