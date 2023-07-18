@@ -17,9 +17,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  User? currentUser = FirebaseAuth.instance.currentUser;
+  bool isPacking = false;
   var userData;
   Future<void> getData() async {
-    User? currentUser = FirebaseAuth.instance.currentUser;
     CollectionReference ref = FirebaseFirestore.instance.collection('users');
     DocumentSnapshot documentSnapshot = await ref.doc(currentUser!.uid).get();
 
@@ -200,6 +201,7 @@ class _HomePageState extends State<HomePage> {
                               right: MediaQuery.of(context).size.height * 0.02,
                             ),
                             child: TextFormField(
+                              controller: foodItemController,
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.fromLTRB(
                                     20.0, 10.0, 20.0, 0.0),
@@ -243,6 +245,7 @@ class _HomePageState extends State<HomePage> {
                               right: MediaQuery.of(context).size.height * 0.02,
                             ),
                             child: TextFormField(
+                              controller: noOfPeopleController,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.fromLTRB(
@@ -324,19 +327,24 @@ class _HomePageState extends State<HomePage> {
                         Positioned(
                           top: MediaQuery.of(context).size.height * 0.72,
                           // left: ,
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * 0.07,
-                            width: MediaQuery.of(context).size.width * 0.7,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: ColorConstant.secondaryColor,
-                            ),
-                            child: Center(
-                              child: Text(
-                                "CONFIRM",
-                                style: AppTextStyle.normalText(
-                                  color: ColorConstant.primaryColor,
-                                  fontSize: 24,
+                          child: GestureDetector(
+                            onTap: () {
+                              // uploadDataToFirebase(isPacking);
+                            },
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: ColorConstant.secondaryColor,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "CONFIRM",
+                                  style: AppTextStyle.normalText(
+                                    color: ColorConstant.primaryColor,
+                                    fontSize: 24,
+                                  ),
                                 ),
                               ),
                             ),
@@ -353,6 +361,16 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _groupValue = value!;
       // print(_groupValue);
+    });
+  }
+
+  uploadDataToFirebase(bool isPacking) async {
+    CollectionReference ref = FirebaseFirestore.instance.collection('orders');
+    ref.doc(currentUser!.uid).set({
+      'date': dateController.text,
+      'food_items': foodItemController.text,
+      'number_of_people': noOfPeopleController.text,
+      'packing': isPacking ? "Packing" : "In-House",
     });
   }
 }
