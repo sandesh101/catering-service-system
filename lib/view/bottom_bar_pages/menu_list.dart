@@ -11,8 +11,6 @@ class MenuListPage extends StatefulWidget {
 }
 
 class _MenuListPageState extends State<MenuListPage> {
-  List<dynamic> productList = [];
-
   @override
   void initState() {
     super.initState();
