@@ -338,6 +338,7 @@ class _HomePageState extends State<HomePage> {
                                   noOfPeopleController.text,
                                   isPacking,
                                 );
+                                // cart.getValue();
                               },
                               child: Container(
                                 height:

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 class CartProvider extends ChangeNotifier {
   User? currentUser = FirebaseAuth.instance.currentUser;
+  List<Map<String, dynamic>> cartList = [];
+
   Future uploadDataToFirebase(
       String date, String foodItem, String numberPeople, bool isPacking) async {
     CollectionReference ref = FirebaseFirestore.instance.collection('cart');
@@ -14,4 +16,10 @@ class CartProvider extends ChangeNotifier {
       'packing': isPacking ? "Packing" : "In-House",
     });
   }
+
+  // getValue() {
+  //   Future<QuerySnapshot<Map<String, dynamic>>> ref =
+  //       FirebaseFirestore.instance.collection('cart').get();
+  //   print();
+  // }
 }
