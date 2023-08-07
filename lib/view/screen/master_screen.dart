@@ -49,10 +49,34 @@ class _MasterScreenState extends State<MasterScreen> {
             color: ColorConstant.primaryColor,
             size: 25,
           ),
-          Icon(
-            Iconsax.shopping_cart,
-            color: ColorConstant.primaryColor,
-            size: 25,
+          Stack(
+            children: [
+              Icon(
+                Iconsax.shopping_cart,
+                color: ColorConstant.primaryColor,
+                size: 25,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0, bottom: 10.0),
+                child: Container(
+                  height: 20,
+                  width: 20,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: ColorConstant.secondaryColor,
+                  ),
+                  child: Center(
+                    child: Text(
+                      '5',
+                      style: AppTextStyle.boldText(
+                        color: Colors.white,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
           ),
           Icon(
             Iconsax.user,
