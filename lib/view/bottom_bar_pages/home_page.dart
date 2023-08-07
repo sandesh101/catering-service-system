@@ -1,4 +1,5 @@
 import 'package:catering_service/constant.dart';
+import 'package:catering_service/provider/cart_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:nepali_date_picker/nepali_date_picker.dart';
 import 'package:nepali_date_picker/nepali_date_picker.dart' as picker;
+import 'package:provider/provider.dart';
 
 import '../widgets/slider.dart';
 
@@ -327,23 +329,31 @@ class _HomePageState extends State<HomePage> {
                         Positioned(
                           top: MediaQuery.of(context).size.height * 0.72,
                           // left: ,
-                          child: GestureDetector(
-                            onTap: () {
-                              // uploadDataToFirebase(isPacking);
-                            },
-                            child: Container(
-                              height: MediaQuery.of(context).size.height * 0.07,
-                              width: MediaQuery.of(context).size.width * 0.7,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: ColorConstant.secondaryColor,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "CONFIRM",
-                                  style: AppTextStyle.normalText(
-                                    color: ColorConstant.primaryColor,
-                                    fontSize: 24,
+                          child: Consumer<CartProvider>(
+                            builder: (context, cart, _) => GestureDetector(
+                              onTap: () {
+                                cart.uploadDataToFirebase(
+                                  dateController.text,
+                                  foodItemController.text,
+                                  noOfPeopleController.text,
+                                  isPacking,
+                                );
+                              },
+                              child: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.07,
+                                width: MediaQuery.of(context).size.width * 0.7,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: ColorConstant.secondaryColor,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "CONFIRM",
+                                    style: AppTextStyle.normalText(
+                                      color: ColorConstant.primaryColor,
+                                      fontSize: 24,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -361,16 +371,6 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _groupValue = value!;
       // print(_groupValue);
-    });
-  }
-
-  uploadDataToFirebase(bool isPacking) async {
-    CollectionReference ref = FirebaseFirestore.instance.collection('orders');
-    ref.doc(currentUser!.uid).set({
-      'date': dateController.text,
-      'food_items': foodItemController.text,
-      'number_of_people': noOfPeopleController.text,
-      'packing': isPacking ? "Packing" : "In-House",
     });
   }
 }
