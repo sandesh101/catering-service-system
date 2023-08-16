@@ -10,7 +10,7 @@ class EsewaPage extends StatefulWidget {
 
 class _EsewaPageState extends State<EsewaPage> {
   late InAppWebViewController inAppWebViewController;
-  String url = 'https://facebook.com/';
+  String url = 'https://esewa.com.np/';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
