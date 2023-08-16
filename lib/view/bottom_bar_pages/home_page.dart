@@ -1,6 +1,7 @@
 import 'package:catering_service/constant.dart';
 import 'package:catering_service/provider/cart_provider.dart';
 import 'package:catering_service/view/widgets/available_items.dart';
+import 'package:catering_service/view/widgets/custom_snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -324,13 +325,19 @@ class _HomePageState extends State<HomePage> {
                         Consumer<CartProvider>(
                           builder: (context, cart, _) => GestureDetector(
                             onTap: () async {
-                              await cart.uploadDataToFirebase(
-                                dateController.text,
-                                foodItemController.text,
-                                noOfPeopleController.text,
-                                isPacking,
-                              );
-                              // cart.getValue();
+                              await cart
+                                  .uploadDataToFirebase(
+                                    dateController.text,
+                                    foodItemController.text,
+                                    noOfPeopleController.text,
+                                    isPacking,
+                                  )
+                                  .then(
+                                    (value) => CustomSnackbar.showSnack(
+                                        context,
+                                        "Added to Cart",
+                                        ColorConstant.accentColor),
+                                  );
                               await cart.getOrders();
                             },
                             child: Container(
@@ -348,7 +355,7 @@ class _HomePageState extends State<HomePage> {
                                         "CONFIRM",
                                         style: AppTextStyle.normalText(
                                           color: ColorConstant.primaryColor,
-                                          fontSize: 24,
+                                          fontSize: 20,
                                         ),
                                       ),
                               ),

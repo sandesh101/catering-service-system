@@ -7,6 +7,7 @@ class ColorConstant {
   static Color cardColor = const Color(0xFFD8D9DA);
   static Color primaryColor = const Color(0xFFFBFBFF);
   static Color accentColor = const Color(0xFF6EEB83);
+  static Color redColor = const Color(0xFFCD1818);
 }
 
 class AppTextStyle {

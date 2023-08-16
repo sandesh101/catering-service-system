@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class CartProvider extends ChangeNotifier {
+  CollectionReference ref = FirebaseFirestore.instance.collection('cart');
+
   User? currentUser = FirebaseAuth.instance.currentUser;
   List<Map<String, dynamic>> _cartList = [];
   bool _isUploading = false;
@@ -22,8 +24,6 @@ class CartProvider extends ChangeNotifier {
   }
 
   Future<void> getOrders() async {
-    CollectionReference ref = FirebaseFirestore.instance.collection('cart');
-
     try {
       QuerySnapshot querySnapshot =
           await ref.where('user_id', isEqualTo: currentUser!.uid).get();
@@ -49,25 +49,33 @@ class CartProvider extends ChangeNotifier {
   Future uploadDataToFirebase(
       String date, String foodItem, String numberPeople, bool isPacking) async {
     setUploading(true);
-    CollectionReference ref = FirebaseFirestore.instance.collection('cart');
 
     // Add a new document with an auto-generated ID
     try {
-      await ref.add({
+      final docRef = await ref.add({
         'user_id': currentUser!.uid,
         'date': date,
         'food_items': foodItem,
         'number_of_people': numberPeople,
         'packing': isPacking ? "Packing" : "In-House",
-      }).then((value) => setUploading(false));
+      });
+      final orderId = docRef.id;
+      await docRef.update({'order_id': orderId}).then((value) {
+        setUploading(false);
+      });
     } catch (e) {
       print(e.toString());
     }
   }
 
-  // getValue() {
-  //   Future<QuerySnapshot<Map<String, dynamic>>> ref =
-  //       FirebaseFirestore.instance.collection('cart').get();
-  //   print();
-  // }
+  removeOrder(String orderId) async {
+    try {
+      await ref.doc(orderId).delete();
+      // Remove the order from the _cartList
+      _cartList.removeWhere((order) => order['orderId'] == orderId);
+      setCart(_cartList);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }
