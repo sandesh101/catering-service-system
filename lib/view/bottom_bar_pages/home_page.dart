@@ -22,6 +22,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _formKey = GlobalKey<FormState>();
   User? currentUser = FirebaseAuth.instance.currentUser;
   bool isPacking = false;
   var userData;
@@ -71,299 +72,324 @@ class _HomePageState extends State<HomePage> {
         title: const Text("HotCase"),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: FutureBuilder(
-          future: getData(),
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) =>
-              snapshot.connectionState == ConnectionState.waiting
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : Column(
-                      // alignment: AlignmentDirectional.center,
-                      children: [
-                        //User Info
-                        Padding(
-                          padding: EdgeInsets.all(
-                              MediaQuery.of(context).size.width * 0.05),
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * 0.1,
-                            decoration: BoxDecoration(
-                              color: ColorConstant.cardColor,
-                              borderRadius: BorderRadius.circular(10),
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: FutureBuilder(
+            future: getData(),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) =>
+                snapshot.connectionState == ConnectionState.waiting
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Column(
+                        // alignment: AlignmentDirectional.center,
+                        children: [
+                          //User Info
+                          Padding(
+                            padding: EdgeInsets.all(
+                                MediaQuery.of(context).size.width * 0.05),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.1,
+                              decoration: BoxDecoration(
+                                color: ColorConstant.cardColor,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 35,
+                                      backgroundImage:
+                                          NetworkImage(userData['image']),
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.05,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Hi, ${userData['name']}",
+                                          style: AppTextStyle.normalText(
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Let's Grab the Food!!",
+                                          style: AppTextStyle.normalText(
+                                            fontSize: 16,
+                                            color: const Color(0xFF797373),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
+                          ),
+                          //Slider
+                          // const Sliders(),
+                          //Slider End
+                          //Available items
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 8.0),
+                            child: Align(
+                              alignment: AlignmentDirectional.topStart,
+                              child: Text(
+                                "Available Items",
+                                style: AppTextStyle.boldText(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const AvailableItems(),
+                          //Nepali Date Picker
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: MediaQuery.of(context).size.height * 0.02,
+                              left: MediaQuery.of(context).size.height * 0.02,
+                              right: MediaQuery.of(context).size.height * 0.02,
+                            ),
+                            child: GestureDetector(
+                              onTap: () {
+                                pickDate();
+                              },
+                              child: AbsorbPointer(
+                                child: TextFormField(
+                                  // keyboardType: TextInputType.datetime,
+                                  controller: dateController,
+
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.fromLTRB(
+                                        20.0, 10.0, 20.0, 0.0),
+                                    prefixIcon: const Icon(
+                                      Iconsax.calendar,
+                                      color: Colors.black,
+                                    ),
+
+                                    // prefixIconColor: Constant.secondaryColor,
+                                    label: Text(
+                                      "Pick a Date",
+                                      style: AppTextStyle.normalText(),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: BorderSide(
+                                        color: ColorConstant.secondaryColor,
+                                        width: 2.0,
+                                      ),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: const BorderSide(
+                                        color: Color(0xFF827C7C),
+                                      ),
+                                    ),
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "Date is required";
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          //Food Items
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: MediaQuery.of(context).size.height * 0.02,
+                              left: MediaQuery.of(context).size.height * 0.02,
+                              right: MediaQuery.of(context).size.height * 0.02,
+                            ),
+                            child: TextFormField(
+                              controller: foodItemController,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.fromLTRB(
+                                    20.0, 10.0, 20.0, 0.0),
+                                prefixIcon: const Icon(
+                                  Iconsax.bag_happy,
+                                  color: Colors.black,
+                                ),
+
+                                // prefixIconColor: Constant.secondaryColor,
+                                label: Text(
+                                  "Select Food Items",
+                                  style: AppTextStyle.normalText(),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                    color: ColorConstant.secondaryColor,
+                                    width: 2.0,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                    color: Color(0xFF827C7C),
+                                  ),
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Items required";
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          //Food Items end
+                          //Number of people
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: MediaQuery.of(context).size.height * 0.02,
+                              left: MediaQuery.of(context).size.height * 0.02,
+                              right: MediaQuery.of(context).size.height * 0.02,
+                            ),
+                            child: TextFormField(
+                              controller: noOfPeopleController,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.fromLTRB(
+                                    20.0, 10.0, 20.0, 0.0),
+                                prefixIcon: const Icon(
+                                  Iconsax.people,
+                                  color: Colors.black,
+                                ),
+
+                                // prefixIconColor: Constant.secondaryColor,
+                                label: Text(
+                                  "Number of People",
+                                  style: AppTextStyle.normalText(),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                    color: ColorConstant.secondaryColor,
+                                    width: 2.0,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                    color: Color(0xFF827C7C),
+                                  ),
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Number required";
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          //Radio BUuttons
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
                                 children: [
-                                  CircleAvatar(
-                                    radius: 35,
-                                    backgroundImage:
-                                        NetworkImage(userData['image']),
+                                  Radio(
+                                    activeColor: ColorConstant.accentColor,
+                                    value: 0,
+                                    groupValue: _groupValue,
+                                    onChanged: handleRadio,
                                   ),
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.05,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Hi, ${userData['name']}",
-                                        style: AppTextStyle.normalText(
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                      Text(
-                                        "Let's Grab the Food!!",
-                                        style: AppTextStyle.normalText(
-                                          fontSize: 16,
-                                          color: const Color(0xFF797373),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                  Text(
+                                    "Packing",
+                                    style: AppTextStyle.normalText(
+                                      fontSize: 18,
+                                    ),
+                                  )
                                 ],
                               ),
-                            ),
-                          ),
-                        ),
-                        //Slider
-                        // const Sliders(),
-                        //Slider End
-                        //Available items
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 8.0),
-                          child: Align(
-                            alignment: AlignmentDirectional.topStart,
-                            child: Text(
-                              "Available Items",
-                              style: AppTextStyle.boldText(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w500,
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.1,
                               ),
-                            ),
-                          ),
-                        ),
-                        const AvailableItems(),
-                        //Nepali Date Picker
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height * 0.02,
-                            left: MediaQuery.of(context).size.height * 0.02,
-                            right: MediaQuery.of(context).size.height * 0.02,
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              pickDate();
-                            },
-                            child: AbsorbPointer(
-                              child: TextFormField(
-                                // keyboardType: TextInputType.datetime,
-                                controller: dateController,
-
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.fromLTRB(
-                                      20.0, 10.0, 20.0, 0.0),
-                                  prefixIcon: const Icon(
-                                    Iconsax.calendar,
-                                    color: Colors.black,
+                              Row(
+                                children: [
+                                  Radio(
+                                    activeColor: ColorConstant.accentColor,
+                                    value: 1,
+                                    groupValue: _groupValue,
+                                    onChanged: handleRadio,
                                   ),
-
-                                  // prefixIconColor: Constant.secondaryColor,
-                                  label: Text(
-                                    "Pick a Date",
-                                    style: AppTextStyle.normalText(),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: ColorConstant.secondaryColor,
-                                      width: 2.0,
+                                  Text(
+                                    "In-House",
+                                    style: AppTextStyle.normalText(
+                                      fontSize: 18,
                                     ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: const BorderSide(
-                                      color: Color(0xFF827C7C),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        //Food Items
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height * 0.02,
-                            left: MediaQuery.of(context).size.height * 0.02,
-                            right: MediaQuery.of(context).size.height * 0.02,
-                          ),
-                          child: TextFormField(
-                            controller: foodItemController,
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.fromLTRB(
-                                  20.0, 10.0, 20.0, 0.0),
-                              prefixIcon: const Icon(
-                                Iconsax.bag_happy,
-                                color: Colors.black,
-                              ),
-
-                              // prefixIconColor: Constant.secondaryColor,
-                              label: Text(
-                                "Select Food Items",
-                                style: AppTextStyle.normalText(),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: BorderSide(
-                                  color: ColorConstant.secondaryColor,
-                                  width: 2.0,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: Color(0xFF827C7C),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        //Food Items end
-                        //Number of people
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height * 0.02,
-                            left: MediaQuery.of(context).size.height * 0.02,
-                            right: MediaQuery.of(context).size.height * 0.02,
-                          ),
-                          child: TextFormField(
-                            controller: noOfPeopleController,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.fromLTRB(
-                                  20.0, 10.0, 20.0, 0.0),
-                              prefixIcon: const Icon(
-                                Iconsax.people,
-                                color: Colors.black,
-                              ),
-
-                              // prefixIconColor: Constant.secondaryColor,
-                              label: Text(
-                                "Number of People",
-                                style: AppTextStyle.normalText(),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: BorderSide(
-                                  color: ColorConstant.secondaryColor,
-                                  width: 2.0,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: const BorderSide(
-                                  color: Color(0xFF827C7C),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        //Radio BUuttons
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              children: [
-                                Radio(
-                                  activeColor: ColorConstant.accentColor,
-                                  value: 0,
-                                  groupValue: _groupValue,
-                                  onChanged: handleRadio,
-                                ),
-                                Text(
-                                  "Packing",
-                                  style: AppTextStyle.normalText(
-                                    fontSize: 18,
-                                  ),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.1,
-                            ),
-                            Row(
-                              children: [
-                                Radio(
-                                  activeColor: ColorConstant.accentColor,
-                                  value: 1,
-                                  groupValue: _groupValue,
-                                  onChanged: handleRadio,
-                                ),
-                                Text(
-                                  "In-House",
-                                  style: AppTextStyle.normalText(
-                                    fontSize: 18,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        //Radio BUuttons
-                        Consumer<CartProvider>(
-                          builder: (context, cart, _) => GestureDetector(
-                            onTap: () async {
-                              await cart
-                                  .uploadDataToFirebase(
-                                    dateController.text,
-                                    foodItemController.text,
-                                    noOfPeopleController.text,
-                                    isPacking,
                                   )
-                                  .then(
-                                    (value) => CustomSnackbar.showSnack(
-                                        context,
-                                        "Added to Cart",
-                                        ColorConstant.accentColor),
-                                  );
-                              await cart.getOrders();
-                            },
-                            child: Container(
-                              height: MediaQuery.of(context).size.height * 0.07,
-                              width: MediaQuery.of(context).size.width * 0.7,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: ColorConstant.secondaryColor,
+                                ],
                               ),
-                              child: Center(
-                                child: cart.isUploading
-                                    ? Lottie.asset(
-                                        'assets/animations/loading.json')
-                                    : Text(
-                                        "CONFIRM",
-                                        style: AppTextStyle.normalText(
-                                          color: ColorConstant.primaryColor,
-                                          fontSize: 20,
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          //Radio BUuttons
+                          Consumer<CartProvider>(
+                            builder: (context, cart, _) => GestureDetector(
+                              onTap: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  await cart
+                                      .uploadDataToFirebase(
+                                        dateController.text,
+                                        foodItemController.text,
+                                        noOfPeopleController.text,
+                                        isPacking,
+                                      )
+                                      .then(
+                                        (value) => CustomSnackbar.showSnack(
+                                            context,
+                                            "Added to Cart",
+                                            ColorConstant.accentColor),
+                                      );
+                                  await cart.getOrders();
+                                }
+                              },
+                              child: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.07,
+                                width: MediaQuery.of(context).size.width * 0.7,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: ColorConstant.secondaryColor,
+                                ),
+                                child: Center(
+                                  child: cart.isUploading
+                                      ? Lottie.asset(
+                                          'assets/animations/loading.json')
+                                      : Text(
+                                          "CONFIRM",
+                                          style: AppTextStyle.normalText(
+                                            color: ColorConstant.primaryColor,
+                                            fontSize: 20,
+                                          ),
                                         ),
-                                      ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
+          ),
         ),
       ),
     );
