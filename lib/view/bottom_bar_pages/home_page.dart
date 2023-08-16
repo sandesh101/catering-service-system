@@ -1,5 +1,6 @@
 import 'package:catering_service/constant.dart';
 import 'package:catering_service/provider/cart_provider.dart';
+import 'package:catering_service/view/widgets/available_items.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ import 'package:nepali_date_picker/nepali_date_picker.dart';
 import 'package:nepali_date_picker/nepali_date_picker.dart' as picker;
 import 'package:provider/provider.dart';
 
-import '../widgets/slider.dart';
+// import '../widgets/slider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -121,8 +122,24 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         //Slider
-                        const Sliders(),
+                        // const Sliders(),
                         //Slider End
+                        //Available items
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 8.0),
+                          child: Align(
+                            alignment: AlignmentDirectional.topStart,
+                            child: Text(
+                              "Available Items",
+                              style: AppTextStyle.boldText(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                        AvailableItems(),
                         //Nepali Date Picker
                         Padding(
                           padding: EdgeInsets.only(
