@@ -2,7 +2,7 @@
 <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:label="Hot Case"
+        android:label="HotCase"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
