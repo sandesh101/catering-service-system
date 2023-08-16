@@ -331,14 +331,15 @@ class _HomePageState extends State<HomePage> {
                           // left: ,
                           child: Consumer<CartProvider>(
                             builder: (context, cart, _) => GestureDetector(
-                              onTap: () {
-                                cart.uploadDataToFirebase(
+                              onTap: () async {
+                                await cart.uploadDataToFirebase(
                                   dateController.text,
                                   foodItemController.text,
                                   noOfPeopleController.text,
                                   isPacking,
                                 );
                                 // cart.getValue();
+                                await cart.getOrders();
                               },
                               child: Container(
                                 height:

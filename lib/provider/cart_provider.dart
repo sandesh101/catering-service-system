@@ -4,17 +4,36 @@ import 'package:flutter/material.dart';
 
 class CartProvider extends ChangeNotifier {
   User? currentUser = FirebaseAuth.instance.currentUser;
-  List<Map<String, dynamic>> cartList = [];
+  List<Map<String, dynamic>> _cartList = [];
   bool _isUploading = false;
 
+  List<Map<String, dynamic>> get cartList => _cartList;
   bool get isUploading => _isUploading;
+
+  setCart(List<Map<String, dynamic>> cartValue) {
+    _cartList = cartValue;
+    notifyListeners();
+  }
 
   setUploading(bool value) {
     _isUploading = value;
     notifyListeners();
   }
 
-  Future getOrders() async {}
+  Future<void> getOrders() async {
+    CollectionReference ref = FirebaseFirestore.instance.collection('cart');
+
+    try {
+      QuerySnapshot querySnapshot =
+          await ref.where('user_id', isEqualTo: currentUser!.uid).get();
+      _cartList = querySnapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
+      setCart(_cartList);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   // Future uploadDataToFirebase(
   //     String date, String foodItem, String numberPeople, bool isPacking) async {

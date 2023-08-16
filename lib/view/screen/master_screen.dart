@@ -1,4 +1,5 @@
 import 'package:catering_service/constant.dart';
+import 'package:catering_service/provider/cart_provider.dart';
 import 'package:catering_service/view/bottom_bar_pages/cart_page.dart';
 import 'package:catering_service/view/bottom_bar_pages/home_page.dart';
 import 'package:catering_service/view/bottom_bar_pages/menu_list.dart';
@@ -6,6 +7,7 @@ import 'package:catering_service/view/bottom_bar_pages/profile_page.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
 
 class MasterScreen extends StatefulWidget {
   const MasterScreen({super.key});
@@ -15,6 +17,14 @@ class MasterScreen extends StatefulWidget {
 }
 
 class _MasterScreenState extends State<MasterScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<CartProvider>(context, listen: false).getOrders();
+    });
+  }
+
   var _currentIndex = 0;
   final screens = [
     //HomePage
@@ -49,34 +59,36 @@ class _MasterScreenState extends State<MasterScreen> {
             color: ColorConstant.primaryColor,
             size: 25,
           ),
-          Stack(
-            children: [
-              Icon(
-                Iconsax.shopping_cart,
-                color: ColorConstant.primaryColor,
-                size: 25,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0, bottom: 10.0),
-                child: Container(
-                  height: 20,
-                  width: 20,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: ColorConstant.secondaryColor,
-                  ),
-                  child: Center(
-                    child: Text(
-                      '5',
-                      style: AppTextStyle.boldText(
-                        color: Colors.white,
-                        fontSize: 12,
+          Consumer<CartProvider>(
+            builder: (context, cartProvider, _) => Stack(
+              children: [
+                Icon(
+                  Iconsax.shopping_cart,
+                  color: ColorConstant.primaryColor,
+                  size: 25,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0, bottom: 10.0),
+                  child: Container(
+                    height: 20,
+                    width: 20,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: ColorConstant.secondaryColor,
+                    ),
+                    child: Center(
+                      child: Text(
+                        cartProvider.cartList.length.toString(),
+                        style: AppTextStyle.boldText(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
           Icon(
             Iconsax.user,
