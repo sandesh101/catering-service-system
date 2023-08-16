@@ -1,3 +1,4 @@
+import 'package:catering_service/constant.dart';
 import 'package:catering_service/provider/auth_provider.dart';
 import 'package:catering_service/provider/cart_provider.dart';
 import 'package:catering_service/provider/image_picker_provider.dart';
@@ -32,6 +33,13 @@ class MyApp extends StatelessWidget {
         title: 'HotCase',
         theme: ThemeData(
           useMaterial3: true,
+          appBarTheme: AppBarTheme(
+            backgroundColor: ColorConstant.blackColor,
+            titleTextStyle: AppTextStyle.normalText(
+              fontSize: 20,
+              color: ColorConstant.primaryColor,
+            ),
+          ),
         ),
         initialRoute: "/",
         routes: routeScreen,

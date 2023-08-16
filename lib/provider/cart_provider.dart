@@ -12,6 +12,7 @@ class CartProvider extends ChangeNotifier {
 
   setCart(List<Map<String, dynamic>> cartValue) {
     _cartList = cartValue;
+    print("CART: $_cartList");
     notifyListeners();
   }
 
