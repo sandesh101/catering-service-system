@@ -147,7 +147,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
-                        AvailableItems(),
+                        const AvailableItems(),
                         //Nepali Date Picker
                         Padding(
                           padding: EdgeInsets.only(
@@ -214,7 +214,7 @@ class _HomePageState extends State<HomePage> {
 
                               // prefixIconColor: Constant.secondaryColor,
                               label: Text(
-                                "Food Items",
+                                "Select Food Items",
                                 style: AppTextStyle.normalText(),
                               ),
                               focusedBorder: OutlineInputBorder(

@@ -1,6 +1,7 @@
 import 'package:catering_service/constant.dart';
 import 'package:catering_service/provider/cart_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 
 class CartPage extends StatefulWidget {
@@ -13,7 +14,6 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<CartProvider>(context, listen: false).getOrders();
@@ -27,10 +27,91 @@ class _CartPageState extends State<CartPage> {
         title: const Text("Cart Page"),
         centerTitle: true,
       ),
-      body: Center(
-        child: Text(
-          'Cart Page',
-          style: AppTextStyle.normalText(fontSize: 24),
+      body: SizedBox(
+        height: MediaQuery.sizeOf(context).height,
+        child: Consumer<CartProvider>(
+          builder: (context, cart, _) => ListView.builder(
+              itemCount: cart.cartList.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8.0,
+                    vertical: 8.0,
+                  ),
+                  child: Container(
+                    height: MediaQuery.sizeOf(context).height * 0.15,
+                    decoration: BoxDecoration(
+                      color: ColorConstant.blackColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Stack(
+                      children: [
+                        const Positioned(
+                          child: Image(
+                            image: AssetImage('assets/images/jeri.png'),
+                          ),
+                        ),
+                        Positioned(
+                          top: MediaQuery.sizeOf(context).height * 0.03,
+                          left: MediaQuery.sizeOf(context).width * 0.33,
+                          // right: 0,
+                          child: Text(
+                            cart.cartList[index]['food_items'],
+                            style: AppTextStyle.normalText(
+                              color: ColorConstant.primaryColor,
+                              fontSize: 20,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Positioned(
+                            top: MediaQuery.sizeOf(context).height * 0.12,
+                            left: MediaQuery.sizeOf(context).width * 0.33,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Iconsax.calendar,
+                                  color: ColorConstant.primaryColor,
+                                  size: 20,
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  cart.cartList[index]['date'],
+                                  style: AppTextStyle.normalText(
+                                    color: ColorConstant.primaryColor,
+                                  ),
+                                ),
+                              ],
+                            )),
+                        Positioned(
+                          top: MediaQuery.sizeOf(context).height * 0.08,
+                          left: MediaQuery.sizeOf(context).width * 0.33,
+                          // right: 0,
+                          child: Text(
+                            "Quantity: ${cart.cartList[index]['number_of_people']}",
+                            style: AppTextStyle.normalText(
+                              color: ColorConstant.primaryColor,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: MediaQuery.sizeOf(context).height * 0.08,
+                          right: MediaQuery.sizeOf(context).width * 0.1,
+                          child: Text(
+                            "Total: ${cart.cartList[index]['number_of_people']}",
+                            style: AppTextStyle.normalText(
+                              color: ColorConstant.primaryColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
         ),
       ),
     );
