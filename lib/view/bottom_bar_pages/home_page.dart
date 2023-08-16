@@ -62,309 +62,299 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 5.0,
-          title: Text(
-            "HotCase",
-            style: AppTextStyle.normalText(
-              color: ColorConstant.blackColor,
-              fontSize: 24,
-            ),
-          ),
-          centerTitle: true,
-        ),
-        body: FutureBuilder(
-          future: getData(),
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) =>
-              snapshot.connectionState == ConnectionState.waiting
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : Stack(
-                      alignment: AlignmentDirectional.center,
-                      children: [
-                        //User Info
-                        Positioned(
-                          top: MediaQuery.of(context).size.height * 0,
-                          left: 0,
-                          right: 0,
-                          child: Padding(
-                            padding: EdgeInsets.all(
-                                MediaQuery.of(context).size.width * 0.03),
-                            child: SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.1,
-                              child: Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 35,
-                                    backgroundImage:
-                                        NetworkImage(userData['image']),
-                                  ),
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.05,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Hi, ${userData['name']}",
-                                        style: AppTextStyle.normalText(
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                      Text(
-                                        "Let's Grab the Food!!",
-                                        style: AppTextStyle.normalText(
-                                          fontSize: 16,
-                                          color: const Color(0xFF797373),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        //Slider
-                        Positioned(
-                          top: MediaQuery.of(context).size.height * 0.13,
-                          left: 0,
-                          right: 0,
-                          child: const Sliders(),
-                        ),
-                        //Slider End
-                        //Nepali Date Picker
-                        Positioned(
-                          top: MediaQuery.of(context).size.height * 0.38,
-                          left: 0,
-                          right: 0,
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              top: MediaQuery.of(context).size.height * 0.02,
-                              left: MediaQuery.of(context).size.height * 0.02,
-                              right: MediaQuery.of(context).size.height * 0.02,
-                            ),
-                            child: GestureDetector(
-                              onTap: () {
-                                pickDate();
-                              },
-                              child: AbsorbPointer(
-                                child: TextFormField(
-                                  // keyboardType: TextInputType.datetime,
-                                  controller: dateController,
-
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.fromLTRB(
-                                        20.0, 10.0, 20.0, 0.0),
-                                    prefixIcon: const Icon(
-                                      Iconsax.calendar,
-                                      color: Colors.black,
-                                    ),
-
-                                    // prefixIconColor: Constant.secondaryColor,
-                                    label: Text(
-                                      "Pick a Date",
-                                      style: AppTextStyle.normalText(),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: BorderSide(
-                                        color: ColorConstant.secondaryColor,
-                                        width: 2.0,
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 5.0,
+        title: const Text("HotCase"),
+        centerTitle: true,
+      ),
+      body: FutureBuilder(
+        future: getData(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) =>
+            snapshot.connectionState == ConnectionState.waiting
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Stack(
+                    alignment: AlignmentDirectional.center,
+                    children: [
+                      //User Info
+                      Positioned(
+                        top: MediaQuery.of(context).size.height * 0,
+                        left: 0,
+                        right: 0,
+                        child: Padding(
+                          padding: EdgeInsets.all(
+                              MediaQuery.of(context).size.width * 0.03),
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.1,
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 35,
+                                  backgroundImage:
+                                      NetworkImage(userData['image']),
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.05,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Hi, ${userData['name']}",
+                                      style: AppTextStyle.normalText(
+                                        fontSize: 20,
                                       ),
                                     ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: const BorderSide(
-                                        color: Color(0xFF827C7C),
+                                    Text(
+                                      "Let's Grab the Food!!",
+                                      style: AppTextStyle.normalText(
+                                        fontSize: 16,
+                                        color: const Color(0xFF797373),
                                       ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ),
+                              ],
                             ),
                           ),
                         ),
-                        //Food Items
-                        Positioned(
-                          top: MediaQuery.of(context).size.height * 0.46,
-                          left: 0,
-                          right: 0,
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              top: MediaQuery.of(context).size.height * 0.02,
-                              left: MediaQuery.of(context).size.height * 0.02,
-                              right: MediaQuery.of(context).size.height * 0.02,
-                            ),
-                            child: TextFormField(
-                              controller: foodItemController,
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.fromLTRB(
-                                    20.0, 10.0, 20.0, 0.0),
-                                prefixIcon: const Icon(
-                                  Iconsax.bag_happy,
-                                  color: Colors.black,
-                                ),
+                      ),
+                      //Slider
+                      Positioned(
+                        top: MediaQuery.of(context).size.height * 0.13,
+                        left: 0,
+                        right: 0,
+                        child: const Sliders(),
+                      ),
+                      //Slider End
+                      //Nepali Date Picker
+                      Positioned(
+                        top: MediaQuery.of(context).size.height * 0.38,
+                        left: 0,
+                        right: 0,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.02,
+                            left: MediaQuery.of(context).size.height * 0.02,
+                            right: MediaQuery.of(context).size.height * 0.02,
+                          ),
+                          child: GestureDetector(
+                            onTap: () {
+                              pickDate();
+                            },
+                            child: AbsorbPointer(
+                              child: TextFormField(
+                                // keyboardType: TextInputType.datetime,
+                                controller: dateController,
 
-                                // prefixIconColor: Constant.secondaryColor,
-                                label: Text(
-                                  "Food Items",
-                                  style: AppTextStyle.normalText(),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: ColorConstant.secondaryColor,
-                                    width: 2.0,
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.fromLTRB(
+                                      20.0, 10.0, 20.0, 0.0),
+                                  prefixIcon: const Icon(
+                                    Iconsax.calendar,
+                                    color: Colors.black,
                                   ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: Color(0xFF827C7C),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        //Food Items end
-                        //Number of people
-                        Positioned(
-                          top: MediaQuery.of(context).size.height * 0.54,
-                          left: 0,
-                          right: 0,
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              top: MediaQuery.of(context).size.height * 0.02,
-                              left: MediaQuery.of(context).size.height * 0.02,
-                              right: MediaQuery.of(context).size.height * 0.02,
-                            ),
-                            child: TextFormField(
-                              controller: noOfPeopleController,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.fromLTRB(
-                                    20.0, 10.0, 20.0, 0.0),
-                                prefixIcon: const Icon(
-                                  Iconsax.people,
-                                  color: Colors.black,
-                                ),
 
-                                // prefixIconColor: Constant.secondaryColor,
-                                label: Text(
-                                  "Number of People",
-                                  style: AppTextStyle.normalText(),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: ColorConstant.secondaryColor,
-                                    width: 2.0,
+                                  // prefixIconColor: Constant.secondaryColor,
+                                  label: Text(
+                                    "Pick a Date",
+                                    style: AppTextStyle.normalText(),
                                   ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: const BorderSide(
-                                    color: Color(0xFF827C7C),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: BorderSide(
+                                      color: ColorConstant.secondaryColor,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFF827C7C),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                        //Radio BUuttons
-                        Positioned(
-                          top: MediaQuery.of(context).size.height * 0.64,
-                          left: 0,
-                          right: 0,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                children: [
-                                  Radio(
-                                    activeColor: ColorConstant.accentColor,
-                                    value: 0,
-                                    groupValue: _groupValue,
-                                    onChanged: handleRadio,
-                                  ),
-                                  Text(
-                                    "Packing",
-                                    style: AppTextStyle.normalText(
-                                      fontSize: 18,
-                                    ),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.1,
-                              ),
-                              Row(
-                                children: [
-                                  Radio(
-                                    activeColor: ColorConstant.accentColor,
-                                    value: 1,
-                                    groupValue: _groupValue,
-                                    onChanged: handleRadio,
-                                  ),
-                                  Text(
-                                    "In-House",
-                                    style: AppTextStyle.normalText(
-                                      fontSize: 18,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ],
+                      ),
+                      //Food Items
+                      Positioned(
+                        top: MediaQuery.of(context).size.height * 0.46,
+                        left: 0,
+                        right: 0,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.02,
+                            left: MediaQuery.of(context).size.height * 0.02,
+                            right: MediaQuery.of(context).size.height * 0.02,
                           ),
-                        ),
-                        //Radio BUuttons
-                        Positioned(
-                          top: MediaQuery.of(context).size.height * 0.72,
-                          // left: ,
-                          child: Consumer<CartProvider>(
-                            builder: (context, cart, _) => GestureDetector(
-                              onTap: () async {
-                                await cart.uploadDataToFirebase(
-                                  dateController.text,
-                                  foodItemController.text,
-                                  noOfPeopleController.text,
-                                  isPacking,
-                                );
-                                // cart.getValue();
-                                await cart.getOrders();
-                              },
-                              child: Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                width: MediaQuery.of(context).size.width * 0.7,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
+                          child: TextFormField(
+                            controller: foodItemController,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.fromLTRB(
+                                  20.0, 10.0, 20.0, 0.0),
+                              prefixIcon: const Icon(
+                                Iconsax.bag_happy,
+                                color: Colors.black,
+                              ),
+
+                              // prefixIconColor: Constant.secondaryColor,
+                              label: Text(
+                                "Food Items",
+                                style: AppTextStyle.normalText(),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: BorderSide(
                                   color: ColorConstant.secondaryColor,
+                                  width: 2.0,
                                 ),
-                                child: Center(
-                                  child: Text(
-                                    "CONFIRM",
-                                    style: AppTextStyle.normalText(
-                                      color: ColorConstant.primaryColor,
-                                      fontSize: 24,
-                                    ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: Color(0xFF827C7C),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      //Food Items end
+                      //Number of people
+                      Positioned(
+                        top: MediaQuery.of(context).size.height * 0.54,
+                        left: 0,
+                        right: 0,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.02,
+                            left: MediaQuery.of(context).size.height * 0.02,
+                            right: MediaQuery.of(context).size.height * 0.02,
+                          ),
+                          child: TextFormField(
+                            controller: noOfPeopleController,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.fromLTRB(
+                                  20.0, 10.0, 20.0, 0.0),
+                              prefixIcon: const Icon(
+                                Iconsax.people,
+                                color: Colors.black,
+                              ),
+
+                              // prefixIconColor: Constant.secondaryColor,
+                              label: Text(
+                                "Number of People",
+                                style: AppTextStyle.normalText(),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: BorderSide(
+                                  color: ColorConstant.secondaryColor,
+                                  width: 2.0,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: const BorderSide(
+                                  color: Color(0xFF827C7C),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      //Radio BUuttons
+                      Positioned(
+                        top: MediaQuery.of(context).size.height * 0.64,
+                        left: 0,
+                        right: 0,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                Radio(
+                                  activeColor: ColorConstant.accentColor,
+                                  value: 0,
+                                  groupValue: _groupValue,
+                                  onChanged: handleRadio,
+                                ),
+                                Text(
+                                  "Packing",
+                                  style: AppTextStyle.normalText(
+                                    fontSize: 18,
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.1,
+                            ),
+                            Row(
+                              children: [
+                                Radio(
+                                  activeColor: ColorConstant.accentColor,
+                                  value: 1,
+                                  groupValue: _groupValue,
+                                  onChanged: handleRadio,
+                                ),
+                                Text(
+                                  "In-House",
+                                  style: AppTextStyle.normalText(
+                                    fontSize: 18,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      //Radio BUuttons
+                      Positioned(
+                        top: MediaQuery.of(context).size.height * 0.72,
+                        // left: ,
+                        child: Consumer<CartProvider>(
+                          builder: (context, cart, _) => GestureDetector(
+                            onTap: () async {
+                              await cart.uploadDataToFirebase(
+                                dateController.text,
+                                foodItemController.text,
+                                noOfPeopleController.text,
+                                isPacking,
+                              );
+                              // cart.getValue();
+                              await cart.getOrders();
+                            },
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: ColorConstant.secondaryColor,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "CONFIRM",
+                                  style: AppTextStyle.normalText(
+                                    color: ColorConstant.primaryColor,
+                                    fontSize: 24,
                                   ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ],
-                    ),
-        ),
+                      ),
+                    ],
+                  ),
       ),
     );
   }
