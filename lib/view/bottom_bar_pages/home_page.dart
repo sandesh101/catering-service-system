@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:nepali_date_picker/nepali_date_picker.dart';
 import 'package:nepali_date_picker/nepali_date_picker.dart' as picker;
 import 'package:provider/provider.dart';
@@ -315,13 +316,16 @@ class _HomePageState extends State<HomePage> {
                                 color: ColorConstant.secondaryColor,
                               ),
                               child: Center(
-                                child: Text(
-                                  "CONFIRM",
-                                  style: AppTextStyle.normalText(
-                                    color: ColorConstant.primaryColor,
-                                    fontSize: 24,
-                                  ),
-                                ),
+                                child: cart.isUploading
+                                    ? Lottie.asset(
+                                        'assets/animations/loading.json')
+                                    : Text(
+                                        "CONFIRM",
+                                        style: AppTextStyle.normalText(
+                                          color: ColorConstant.primaryColor,
+                                          fontSize: 24,
+                                        ),
+                                      ),
                               ),
                             ),
                           ),
