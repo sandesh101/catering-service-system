@@ -84,40 +84,48 @@ class _HomePageState extends State<HomePage> {
                         //User Info
                         Padding(
                           padding: EdgeInsets.all(
-                              MediaQuery.of(context).size.width * 0.03),
-                          child: SizedBox(
+                              MediaQuery.of(context).size.width * 0.05),
+                          child: Container(
                             height: MediaQuery.of(context).size.height * 0.1,
-                            child: Row(
-                              children: [
-                                CircleAvatar(
-                                  radius: 35,
-                                  backgroundImage:
-                                      NetworkImage(userData['image']),
-                                ),
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Hi, ${userData['name']}",
-                                      style: AppTextStyle.normalText(
-                                        fontSize: 20,
+                            decoration: BoxDecoration(
+                              color: ColorConstant.cardColor,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 35,
+                                    backgroundImage:
+                                        NetworkImage(userData['image']),
+                                  ),
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.05,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Hi, ${userData['name']}",
+                                        style: AppTextStyle.normalText(
+                                          fontSize: 20,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      "Let's Grab the Food!!",
-                                      style: AppTextStyle.normalText(
-                                        fontSize: 16,
-                                        color: const Color(0xFF797373),
+                                      Text(
+                                        "Let's Grab the Food!!",
+                                        style: AppTextStyle.normalText(
+                                          fontSize: 16,
+                                          color: const Color(0xFF797373),
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

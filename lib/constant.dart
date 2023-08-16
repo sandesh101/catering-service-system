@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 class ColorConstant {
   static Color blackColor = const Color(0xFF2F2F2F);
   static Color secondaryColor = const Color(0xFFFE9920);
-  // static Color secondaryColor = const Color(0xFF2F2F2F);
+  static Color cardColor = const Color(0xFFD8D9DA);
   static Color primaryColor = const Color(0xFFFBFBFF);
   static Color accentColor = const Color(0xFF6EEB83);
 }
