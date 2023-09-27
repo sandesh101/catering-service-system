@@ -1,6 +1,5 @@
 import 'package:catering_service/constant.dart';
 import 'package:catering_service/provider/cart_provider.dart';
-import 'package:catering_service/view/screen/esewa/esewa_in_app.dart';
 import 'package:catering_service/view/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
@@ -181,12 +180,7 @@ class _CartPageState extends State<CartPage> {
                             style: AppTextStyle.normalText(),
                           ),
                           GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const EsewaPage()));
-                            },
+                            onTap: () {},
                             child: Container(
                               height: MediaQuery.of(context).size.height * 0.06,
                               width: MediaQuery.of(context).size.width * 0.5,
