@@ -1,5 +1,6 @@
 import 'package:catering_service/constant.dart';
 import 'package:catering_service/provider/cart_provider.dart';
+import 'package:catering_service/provider/radio_provider.dart';
 import 'package:catering_service/view/widgets/available_items.dart';
 import 'package:catering_service/view/widgets/custom_snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -25,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
   User? currentUser = FirebaseAuth.instance.currentUser;
   bool isPacking = false;
+  String? selectedFoodItem;
   var userData;
   Future<void> getData() async {
     CollectionReference ref = FirebaseFirestore.instance.collection('users');
@@ -32,7 +34,6 @@ class _HomePageState extends State<HomePage> {
 
     if (documentSnapshot.exists) {
       userData = documentSnapshot.data() as Map<String, dynamic>;
-      print(userData);
     }
   }
 
@@ -47,8 +48,6 @@ class _HomePageState extends State<HomePage> {
   var noOfPeopleController = TextEditingController();
   // NepaliDateTime pickedDate;
   NepaliDateTime? _selectedDateTime;
-  String? selectedCategory;
-  int _groupValue = 0;
 
   void pickDate() async {
     _selectedDateTime = await picker.showMaterialDatePicker(
@@ -100,10 +99,11 @@ class _HomePageState extends State<HomePage> {
                                 child: Row(
                                   children: [
                                     CircleAvatar(
-                                      radius: 35,
-                                      backgroundImage:
-                                          NetworkImage(userData['image']),
-                                    ),
+                                        radius: 35,
+                                        backgroundImage:
+                                            NetworkImage(userData['image'])),
+                                    // AssetImage(
+                                    //     'assets/images/default_user.png')),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.05,
@@ -300,45 +300,48 @@ class _HomePageState extends State<HomePage> {
                             height: 10,
                           ),
                           //Radio BUuttons
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                children: [
-                                  Radio(
-                                    activeColor: ColorConstant.accentColor,
-                                    value: 0,
-                                    groupValue: _groupValue,
-                                    onChanged: handleRadio,
-                                  ),
-                                  Text(
-                                    "Packing",
-                                    style: AppTextStyle.normalText(
-                                      fontSize: 18,
+                          Consumer<RadioProvider>(
+                            builder: (context, radio, _) => Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Radio(
+                                      activeColor: ColorConstant.accentColor,
+                                      value: 0,
+                                      groupValue: radio.groupValue,
+                                      onChanged: radio.handleRadio,
                                     ),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.1,
-                              ),
-                              Row(
-                                children: [
-                                  Radio(
-                                    activeColor: ColorConstant.accentColor,
-                                    value: 1,
-                                    groupValue: _groupValue,
-                                    onChanged: handleRadio,
-                                  ),
-                                  Text(
-                                    "In-House",
-                                    style: AppTextStyle.normalText(
-                                      fontSize: 18,
+                                    Text(
+                                      "Packing",
+                                      style: AppTextStyle.normalText(
+                                        fontSize: 18,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.1,
+                                ),
+                                Row(
+                                  children: [
+                                    Radio(
+                                      activeColor: ColorConstant.accentColor,
+                                      value: 1,
+                                      groupValue: radio.groupValue,
+                                      onChanged: radio.handleRadio,
                                     ),
-                                  )
-                                ],
-                              ),
-                            ],
+                                    Text(
+                                      "In-House",
+                                      style: AppTextStyle.normalText(
+                                        fontSize: 18,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                           const SizedBox(
                             height: 30,
@@ -393,12 +396,5 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-  }
-
-  void handleRadio(int? value) {
-    setState(() {
-      _groupValue = value!;
-      // print(_groupValue);
-    });
   }
 }

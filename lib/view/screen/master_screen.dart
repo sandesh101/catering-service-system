@@ -68,7 +68,7 @@ class _MasterScreenState extends State<MasterScreen> {
                   size: 25,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20.0, bottom: 10.0),
+                  padding: const EdgeInsets.only(left: 18.0, bottom: 12.0),
                   child: Container(
                     height: 20,
                     width: 20,

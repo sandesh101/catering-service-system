@@ -3,6 +3,7 @@ import 'package:catering_service/provider/auth_provider.dart';
 import 'package:catering_service/provider/cart_provider.dart';
 import 'package:catering_service/provider/image_picker_provider.dart';
 import 'package:catering_service/provider/product_provider.dart';
+import 'package:catering_service/provider/radio_provider.dart';
 import 'package:catering_service/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<ProductProvider>(
             create: (_) => ProductProvider()),
         ChangeNotifierProvider<CartProvider>(create: (_) => CartProvider()),
+        ChangeNotifierProvider<RadioProvider>(create: (_) => RadioProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
